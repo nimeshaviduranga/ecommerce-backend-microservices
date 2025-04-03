@@ -1,0 +1,15 @@
+##Config Server connectivity
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    config:
+      uri: http://localhost:8888
+      username: config
+      password: config
+      fail-fast: true
+      retry:
+        initial-interval: 1500
+        multiplier: 1.5
+        max-attempts: 6
+        max-interval: 10000
