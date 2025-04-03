@@ -1,0 +1,55 @@
+server:
+  port: 9001
+
+spring:
+  application:
+    name: product-service
+  config:
+    import: "optional:configserver:http://localhost:8888"
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ecommerce_product
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+  cache:
+    type: redis
+    redis:
+      time-to-live: 600000 # 10 minutes
+  redis:
+    host: localhost
+    port: 6379
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:password@localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+logging:
+  level:
+    com.ecommerce.productservice: DEBUG
+    org.springframework.cache: DEBUG
+
+# JWT configuration for validating tokens from Auth Service
+jwt:
+  secret: jwt_secret_key
