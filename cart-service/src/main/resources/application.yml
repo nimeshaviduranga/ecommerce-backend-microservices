@@ -1,0 +1,64 @@
+server:
+  port: 9003
+
+spring:
+  application:
+    name: cart-service
+  config:
+    import: "optional:configserver:http://localhost:8888"
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      database: 0
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ecommerce_cart
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  jpa:
+    hibernate:
+    ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+
+service:
+  product-service:
+    url: http://localhost:9001
+
+jwt:
+  secret: jwt_secret_key
+  expiration: 86400000 # 24 hours
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:password@localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+logging:
+  level:
+    com.ecommerce.cartservice: DEBUG
+    org.springframework.data.redis: INFO
