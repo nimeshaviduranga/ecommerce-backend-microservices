@@ -1,0 +1,49 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+       git:
+         uri: https://github.com/your-username/config-repo.git
+         username: ${GIT_USERNAME}
+         password: ${GIT_PASSWORD}
+
+  security:
+    user:
+      name: config
+      password: config
+
+# Register with Eureka Service Registry
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:password@localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+# Management endpoints for monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+# Logging configuration
+logging:
+  level:
+    org.springframework.cloud: INFO
+    org.springframework.boot: INFO
+
+# Application information
+info:
+  app:
+    name: ${spring.application.name}
+    description: Configuration Server for E-Commerce Microservices
+    version: 1.0.0

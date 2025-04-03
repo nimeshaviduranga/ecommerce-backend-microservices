@@ -1,0 +1,21 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: file:///tmp/config-repo-test
+          clone-on-start: false
+  # Disable security for tests
+  security:
+    basic:
+      enabled: false
+
+# Disable Eureka client in tests
+eureka:
+  client:
+    enabled: false
