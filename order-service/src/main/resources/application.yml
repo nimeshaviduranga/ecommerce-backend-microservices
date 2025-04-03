@@ -1,0 +1,65 @@
+server:
+  port: 9004
+
+spring:
+  application:
+    name: order-service
+  config:
+    import: "optional:configserver:http://localhost:8888"
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ecommerce_order
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+
+service:
+  cart-service:
+    url: http://localhost:9003
+  product-service:
+    url: http://localhost:9001
+  user-service:
+    url: http://localhost:9002
+
+jwt:
+  secret: jwt_secret_key
+  expiration: 86400000 # 24 hours
+
+payment:
+  stripe:
+    key: your_stripe_secret_key_here
+    enabled: false  # Set to true when integrating with Stripe
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:password@localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+logging:
+  level:
+    com.ecommerce.orderservice: DEBUG
+    org.springframework.web: INFO
+    org.hibernate: INFO
